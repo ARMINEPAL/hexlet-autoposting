@@ -310,11 +310,14 @@ export function AppLayout() {
   const { data: posts = [] } = useContentPlan()
   const { data: connections = [] } = useConnections()
 
+  /** Состояние шагов онбординга определяется по фактическим данным пользователя. */
   const hasProject = projects.length > 0
   const hasConnection = connections.some((c) => c.connected)
   const hasPost = posts.some((p) => p.status === 'sent' || p.status === 'scheduled')
   const isOnboardingComplete = hasProject && hasConnection && hasPost
+
   const [newProjectOpened, newProject] = useDisclosure(false)
+  /** Хранит состояние ручного закрытия чеклиста онбординга. */
   const [onboardingClosed, setOnboardingClosed] = useState(false)
   // Состояние мобильного навбара: открывается/закрывается бургером
   const [navOpened, navbar] = useDisclosure(false)
@@ -326,11 +329,34 @@ export function AppLayout() {
     dispatch(logout())
     navigate('/')
   }
+
+  /**
+ * Убирает состояние первой регистрации после создания проекта.
+ */
   const handleProjectCreated = () => {
     navigate(pathname, {
       replace: true,
       state: null,
     })
+  }
+
+  let content 
+
+  if(justRegistered) {
+    content = ( <Stack 
+      align="center"
+      justify="center"
+      mih="80vh"
+      gap="lg"
+      >
+      <Text fz={36} fw={700}>Добро пожаловать!</Text>
+      <Button size="lg" onClick={newProject.open} leftSection= {<IconPlus size={20}/>}>
+        Создать проект
+      </Button>
+    </Stack>)
+  }
+  else {
+    content = <Outlet/>
   }
 
   return (
@@ -437,19 +463,7 @@ export function AppLayout() {
 
       <AppShell.Main>
         <PostsQuotaBanner />
-        {justRegistered ? 
-        <Stack 
-        align="center"
-        justify="center"
-        mih="80vh"
-        gap="lg"
-        >
-        <Text fz={36} fw={700}>Добро пожаловать!</Text>
-        <Button size="lg" onClick={newProject.open} leftSection= {<IconPlus size={20}/>}>
-          Создать проект
-        </Button>
-      </Stack>
-       : <Outlet />}
+        {content}
       </AppShell.Main>
 
       <CreateProjectModal opened={newProjectOpened} onClose={newProject.close} onCreated={handleProjectCreated} />

@@ -9,6 +9,7 @@ import { useCreateProject } from '../api/useCreateProject'
 interface CreateProjectModalProps {
   opened: boolean
   onClose: () => void
+  /** Вызывается после успешного создания проекта. */
   onCreated?: () => void
 }
 

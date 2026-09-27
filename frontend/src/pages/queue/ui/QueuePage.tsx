@@ -137,6 +137,7 @@ export function QueuePage() {
     statsHandlers.open()
   }
 
+  //TODO: максимально убрать инлайновые стили - негативно влияют на производительность
   return (
     <Stack gap="lg">
       <Title order={1} fw={800} style={{ letterSpacing: '-0.4px' }}>

@@ -43,6 +43,7 @@ export function RegisterForm() {
       await mockRegister({ name: values.name, email: values.email, password: values.password })
       dispatch(login())
       close()
+      //TODO: вынести роуты в отдельный файл
       navigate('/app/calendar', {
         state: { justRegistered: true },
       })
