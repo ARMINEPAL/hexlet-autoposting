@@ -24,7 +24,9 @@ export function CreateProjectModal({ opened, onClose, onCreated }: CreateProject
   })
 
   const submit = form.onSubmit((values) => {
-    createProject(values.name, color)
+    const project = createProject(values.name, color)
+    console.log('onboarding_project_created', { projectId: project.id })
+    // TODO: заменить console.log на отправку события в аналитику
     onCreated?.()
     form.reset()
     setColor(PROJECT_COLORS[0])
