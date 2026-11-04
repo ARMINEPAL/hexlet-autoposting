@@ -26,7 +26,7 @@ interface CommandPaletteProps {
 export function CommandPalette({ onCreatePost, onSelectProject, onOpenPost }: CommandPaletteProps) {
   const navigate = useNavigate()
   const { data: projects = [] } = useProjects()
-  const { data: posts } = useContentPlan()
+  const { data: posts = [] } = useContentPlan()
   const { data: media = [] } = useMedia()
   const projectActions: SpotlightActionData[] = projects
     .filter((project) => !project.archived)
